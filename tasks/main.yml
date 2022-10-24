@@ -5,6 +5,11 @@
     - "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
     - "{{ ansible_os_family }}.yml"
 
+- name: Create supervisor group
+  ansible.builtin.group:
+    name: supervisor
+    state: present
+
 - name: Ensure Supervisor is installed.
   pip:
     name: supervisor

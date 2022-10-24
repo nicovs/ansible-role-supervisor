@@ -9,6 +9,8 @@ supervisor_enabled: true
 
 supervisor_config_path: /etc/supervisor
 
+supervisor_conf_tempate: "supervisord.conf.j2"
+
 # A list of `program`s Supervisor will control. Example commented out below.
 supervisor_programs: []
 # - name: 'apache'
@@ -32,6 +34,9 @@ supervisor_log_dir: /var/log/supervisor
 
 supervisor_user: root
 supervisor_password: 'my_secret_password'
+
+supervisor_http_user: root:supervisor
+supervisor_http_chmod: 0770
 
 supervisor_unix_http_server_enable: true
 supervisor_unix_http_server_socket_path: /var/run/supervisor.sock
