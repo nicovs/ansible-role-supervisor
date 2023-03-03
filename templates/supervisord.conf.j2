@@ -7,18 +7,18 @@ pidfile = /var/run/supervisord.pid
 {% if supervisor_unix_http_server_enable %}
 [unix_http_server]
 file = {{ supervisor_unix_http_server_socket_path }}
-chown = {{ supervisor_http_user }}
-chmod = {{ supervisor_http_chmod }}
+chown = root:{{ supervisor_app | default(supervisor_http_user)  }}
+chmod = {{ supervisor_unix_http_chmod }}
 {% if supervisor_unix_http_server_password_protect %}
-username = {{ supervisor_user }}
-password = {SHA}{{ supervisor_password|hash('sha1') }}
+username = {{ supervisor_http_user }}
+password = {SHA}{{ supervisor_http_password|hash('sha1') }}
 {% endif %}
 
 [supervisorctl]
 serverurl = unix://{{ supervisor_unix_http_server_socket_path }}
 {% if supervisor_unix_http_server_password_protect %}
-username = {{ supervisor_user }}
-password = {{ supervisor_password }}
+username =  {{ supervisor_http_user }}
+password = {{ supervisor_auth_password }}
 {% endif %}
 {% endif -%}
 
@@ -26,15 +26,15 @@ password = {{ supervisor_password }}
 [inet_http_server]
 port = {{ supervisor_inet_http_server_port }}
 {% if supervisor_inet_http_server_password_protect %}
-username = {{ supervisor_user }}
-password = {SHA}{{ supervisor_password|hash('sha1') }}
+username = {{ supervisor_http_user }}
+password = {SHA}{{ supervisor_http_password|hash('sha1') }}
 {% endif %}
 
 [supervisorctl]
 serverurl = http://{{ 'localhost' if supervisor_inet_http_server_port.split(':')[0] == '*' or supervisor_inet_http_server_port.split(':')[0] == '' else supervisor_inet_http_server_port.split(':')[0] }}:{{ supervisor_inet_http_server_port.split(':')[1] }}
 {% if supervisor_inet_http_server_password_protect %}
-username = {{ supervisor_user }}
-password = {{ supervisor_password }}
+username = {{ supervisor_http_user }}
+password = {{ supervisor_http_password }}
 {% endif %}
 {% endif %}
 
